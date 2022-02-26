@@ -50,6 +50,9 @@ router.get('/create', checkIfAuthenticated, async function (req,res) {
     //convert the form to bootstrap design
     res.render('products/create', {
         'form': productForm.toHTML(bootstrapField),
+        cloudinaryName: process.env.CLOUDINARY_NAME,
+        cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+        cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET,
         'date': new Date()
     })
 })
@@ -144,6 +147,9 @@ router.post('/products/:product_id/update', checkIfAuthenticated, async function
     })
     const productForm = createProductForm(choices, allTags);
 
+     // 1 - set the image url in the product form
+    productForm.fields.image_url.value = product.get('image_url');
+
     // fetch the instance of the product that we wish to update
     const product = await Product.where({
         'id': req.params.product_id
@@ -192,7 +198,11 @@ router.post('/products/:product_id/update', checkIfAuthenticated, async function
             // invalid entries
             res.render('products/update', {
                 'form': form.toHTML(bootstrapField),
-                'product': product.toJSON()
+                'product': product.toJSON(),
+                // 2 - send to the HBS file the cloudinary information
+                cloudinaryName: process.env.CLOUDINARY_NAME,
+                cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+                cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
             })
         }
     })
@@ -218,3 +228,4 @@ router.post('/products/:product_id/delete', checkIfAuthenticated, async function
     res.redirect('/products');
 })
 module.exports = router;
+
