@@ -6,7 +6,6 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const FileStore = require('session-file-store')(session);
 
-
 // create an instance of express app
 let app = express();
 
@@ -26,6 +25,7 @@ app.use(
     extended: false
   })
 );
+
 
 // Register Flash middleware. The middleware always run for all routes. 
 //app.use(function (req, res, next) {

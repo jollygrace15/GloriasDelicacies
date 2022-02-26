@@ -6,6 +6,9 @@ const { createUserForm, bootstrapField, createLoginForm } = require('../forms');
 
 const { User } = require('../models');
 
+// import in the CheckIfAuthenticated middleware
+const { checkIfAuthenticated } = require('../middlewares');
+
 const getHashedPassword = (password) => {
     const sha256 = crypto.createHash('sha256');
     const hash = sha256.update(password).digest('base64');

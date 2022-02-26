@@ -8,6 +8,9 @@ const { Product, Category, Tag } = require('../models');
 //import in createProductForm and bootstrapField
 const {bootstrapField, createProductForm} = require('../forms');
 
+// import in the CheckIfAuthenticated middleware
+const { checkIfAuthenticated } = require('../middlewares');
+
 //create a function that will get an info of a particular product ID
 async function getProductById(productId) {
     const product = await Product.where({
@@ -30,7 +33,7 @@ router.get('/products', async function (req,res) {
     })
 })
 //working
-router.get('/create', async function (req,res) {
+router.get('/create', checkIfAuthenticated, async function (req,res) {
     //let choices = [
     //    [1, "Snacks"],
     //    [2, "Juices"],
@@ -51,7 +54,7 @@ router.get('/create', async function (req,res) {
     })
 })
 //working
-router.post('/create', async (req, res) => {
+router.post('/create',  checkIfAuthenticated, async (req, res) => {
     const choices = await Category.fetchAll().map(function(category){
         return [ category.get('id'), category.get('name')]
     })
@@ -95,7 +98,7 @@ router.post('/create', async (req, res) => {
 })
 
 
-router.get('/products/:product_id/update', async function(req, res){
+router.get('/products/:product_id/update', checkIfAuthenticated, async function(req, res){
     //retrieve the product
     const productId = req.params.product_id;
     const product = await Product.where({
@@ -131,7 +134,7 @@ router.get('/products/:product_id/update', async function(req, res){
 
 
 
-router.post('/products/:product_id/update', async function(req,res){ 
+router.post('/products/:product_id/update', checkIfAuthenticated, async function(req,res){ 
     // fetch all the categories
     const choices = await Category.fetchAll().map(function(category){
         return [ category.get('id'), category.get('name')]
@@ -196,7 +199,7 @@ router.post('/products/:product_id/update', async function(req,res){
 })
 
 
-router.get('/products/:product_id/delete', async function(req,res){
+router.get('/products/:product_id/delete', checkIfAuthenticated, async function(req,res){
     //const product = await getProductById(productId)
     // fetch the product that we want to delete
     const product = await Product.where({
@@ -209,7 +212,7 @@ router.get('/products/:product_id/delete', async function(req,res){
     })
 })
 
-router.post('/products/:product_id/delete', async function(req,res){
+router.post('/products/:product_id/delete', checkIfAuthenticated, async function(req,res){
     const product = await getProductById(req.params.product_id)
     await product.destroy();
     res.redirect('/products');
