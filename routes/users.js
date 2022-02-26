@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();  // create a new router object
-
 const crypto = require('crypto');
 const { createUserForm, bootstrapField, createLoginForm } = require('../forms');
 

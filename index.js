@@ -5,6 +5,7 @@ require("dotenv").config();
 const session = require('express-session');
 const flash = require('connect-flash');
 const FileStore = require('session-file-store')(session);
+const csrf = require('csurf')
 
 // create an instance of express app
 let app = express();
@@ -69,6 +70,29 @@ app.use(function (req, res, next) {
 app.use(function(req,res,next){
   res.locals.user = req.session.user;
   next();
+})
+
+
+// enable CSRF
+app.use(csrf());
+
+
+// check if there is a csrf error. If so, render a friendly error message
+app.use(function(err, req, res, next){
+  // check for bad csrf token error
+ if (err && err.code == "EBADCSRFTOKEN") {
+   req.flash('error_messages', 'The form has expired. Please try again.');
+   res.redirect('back'); // 'back' means tell the browser go back to previous page
+ } else {
+   next();
+ }
+})
+
+// share the csrf token with all hbs files
+app.use(function(req,res,next){
+ res.locals.csrfToken = req.csrfToken();  // req.csrfToken() is available
+                                          // after we do `app.use(csrf())`
+ next();
 })
 
 // import in routes
