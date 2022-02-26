@@ -87,7 +87,7 @@ router.post('/login', function(req,res){
                     res.redirect('/');
                 } else {
                     req.flash('error_messages', "Sorry your authentication details are incorrect")
-                    res.redirect('/login')
+                    res.redirect('/users/profile')
                 }
             }
         }

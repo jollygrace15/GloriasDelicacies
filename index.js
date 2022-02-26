@@ -33,6 +33,7 @@ app.use(
 //  next(); // transfers to the next middleware or if none, will pass to the routes.
 //});
 
+
 app.use(function(req,res,next){
   res.locals.date = new Date();  // res.locals is response.locals
                                  // the locals object contain the variables for the hbs file
@@ -63,6 +64,12 @@ app.use(function (req, res, next) {
     res.locals.error_messages = req.flash("error_messages");
     next(); // transfers to the next middleware or if none, will pass to the routes.
 });
+
+// Share the user data with hbs files
+app.use(function(req,res,next){
+  res.locals.user = req.session.user;
+  next();
+})
 
 // import in routes
 const landingRoutes = require('./routes/landing');
