@@ -4,6 +4,7 @@
 <table class="table">
     <thead>
     <tr>
+        <th>Image</th>
         <th>ID</th>
         <th>Name</th>
         <th>Category</th> 
@@ -16,6 +17,11 @@
     <tbody>
         {{#each products}}
         <tr>
+            <td>
+                {{#if this.image_url}}
+                    <img src="{{this.image_url}}" class="img-fluid"/>
+                {{/if}}
+            </td>
             <td>
                 {{this.id}}
             </td>
