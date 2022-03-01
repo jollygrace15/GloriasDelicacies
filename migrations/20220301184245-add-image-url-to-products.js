@@ -16,9 +16,9 @@ exports.setup = function(options, seedLink) {
 
 exports.up = function(db) {
   return db.addColumn('products', 'image_url', {
-    type: 'string',
+    type:'string',
     length:255
-  });
+});
 };
 
 exports.down = function(db) {

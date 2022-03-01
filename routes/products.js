@@ -56,19 +56,25 @@ router.get('/create', checkIfAuthenticated, async function (req,res) {
         'date': new Date()
     })
 })
-//working
-router.post('/create',  checkIfAuthenticated, async (req, res) => {
+
+
+
+router.post('/create', checkIfAuthenticated, async function(req,res){
+    // goal: create a new product based on the input in the forms
     const choices = await Category.fetchAll().map(function(category){
         return [ category.get('id'), category.get('name')]
-    })
+    });
     const allTags = await Tag.fetchAll().map(function(tag){
         return [ tag.get('id'), tag.get('name')]
     })
+    // create an instance of the product form
     const productForm = createProductForm(choices, allTags);
-    productForm.handle(req, {
-        'success': async (form) => {
-             //console.log(form.data);
-
+    productForm.handle(req,{
+        // the success function will be called
+        // if the form's data as provided by the user
+        // has no errors or invalid data
+        'success':async function(form) {
+            console.log(form.data);
             // create a new instance of the Product model
             // NOTE: an instance of a model refers to ONE row
             // inside the table
@@ -76,11 +82,10 @@ router.post('/create',  checkIfAuthenticated, async (req, res) => {
             newProduct.set('name', form.data.name);
             newProduct.set('cost', form.data.cost);
             newProduct.set('description', form.data.description);
-            newProduct.set('category_id', form.data.category_id);          
-            newProduct.set('image_url', form.data.image_url);
+            newProduct.set('category_id', form.data.category_id);  
+            newProduct.set('image_url', form.data.image_url)        ;
+  
             await newProduct.save();
-                console.log(form.data.tags)
-                //console.log(newProduct)
            // create the product first, then save the tags
            // beause we need the product to attach the tags
             if (form.data.tags) {
@@ -89,17 +94,23 @@ router.post('/create',  checkIfAuthenticated, async (req, res) => {
                 // which ids are in the array argument 
                 await newProduct.tags().attach(selectedTags);
             }
-            req.flash("success_messages", `New Product has been created`)
+            // flash messages can ONLY be used before a redirect
+            req.flash('success_messages', 'Product created successfully')  // <-- we call the req.flash() function of the app.use(flash()) in index.js
+            
+            // a redirect sends a response back to the browser
+            // tell it to visit the URL in the first argument
             res.redirect('/products');
         },
-        'error': async (form) => {
-            res.render('products/create', {
+        // the function associated with 'error' will be
+        // called if the form has invalid data,
+        // such as having text for cost
+        'error':function(form) {
+            res.render('products/create',{
                 'form': form.toHTML(bootstrapField)
             })
         }
     })
 })
-
 
 router.get('/products/:product_id/update', checkIfAuthenticated, async function(req, res){
     //retrieve the product

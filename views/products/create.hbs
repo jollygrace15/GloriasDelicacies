@@ -17,7 +17,7 @@
 {{/block}}
 
 {{#block 'js'}}
-<!-- initialise cloudinary →
+<!-- initialise cloudinary -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous"></script>
 
 <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
@@ -36,10 +36,10 @@ function generateSignature(callback,params_to_sign){
 
 
 // create the upload widget 
-var myWidget = cloudinary.createUploadWidget({
-    cloudName: '{{cloudinaryName}}',
-    apiKey: '{{cloudinaryApiKey}}',
-    uploadPreset: '{{cloudinaryPreset}}',
+const myWidget = cloudinary.createUploadWidget({
+    cloudName: "{{cloudinaryName}}",
+    apiKey: "{{cloudinaryApiKey}}",
+    uploadPreset: "{{cloudinaryUploadPreset}}",
     uploadSignature: generateSignature
   }, (error, result) => {
     if (!error && result && result.event === "success") {
@@ -49,14 +49,14 @@ var myWidget = cloudinary.createUploadWidget({
 
       // display the image
       document.querySelector('#id_image_url').value = result.info.url;
-      document.querySelector('#uploaded_image').src = result.info.url;
-      document.querySelector('#uploaded_image').style.display = 'inline';
+      document.querySelector('#uploaded_image').src = result.info.url;    // this once was '#uploaded-image'
+      document.querySelector('#uploaded_image').style.display = 'inline'; // this once was '#uploaded-image'
     }
   }
 )
 
 
-<!-- add event listener to initalise the widget -->
+//<!-- add event listener to initalise the widget -->
 document.getElementById("upload_widget").addEventListener("click", function(){
     myWidget.open();
   }, false);
