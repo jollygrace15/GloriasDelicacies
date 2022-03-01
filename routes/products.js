@@ -162,7 +162,7 @@ router.post('/products/:product_id/update', checkIfAuthenticated, async function
     const productForm = createProductForm(choices, allTags);
 
      // 1 - set the image url in the product form
-    productForm.fields.image_url.value = product.get('image_url');
+    //productForm.fields.image_url.value = product.get('image_url');
 
     // fetch the instance of the product that we wish to update
     const product = await Product.where({
