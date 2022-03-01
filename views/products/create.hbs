@@ -4,6 +4,7 @@
     <h1>Create a new Product</h1>
     <form method="POST">
         {{{form}}}
+        <!--for uploading images-->
         <div>
              <a href="#" class="btn btn-primary" id="upload_widget">Upload</a>
              <img src="" style="display:none" id="uploaded_image"/>
@@ -14,9 +15,6 @@
     
 
 {{/block}}
-
-{{/extends}}
-
 
 {{#block 'js'}}
 <!-- initialise cloudinary -->
@@ -37,36 +35,25 @@ function generateSignature(callback,params_to_sign){
 }
 
 
-// create the upload widget 
-//const myWidget = cloudinary.createUploadWidget({
-//    cloudName: '{{cloudinaryName}}',
-//    apiKey: '{{cloudinaryApiKey}}',
-//    uploadPreset: '{{cloudinaryPreset}}',
-//    uploadSignature: generateSignature
-//  }, (error, result) => {
-//    if (!error && result && result.event === "success") {
-//      console.log('Done! Here is the image info: ', result.info);
-//      // hide the upload widget 
-//      document.querySelector('#upload_widget').style.display="none";
+ create the upload widget 
+const myWidget = cloudinary.createUploadWidget({
+    cloudName: '{{cloudinaryName}}',
+    apiKey: '{{cloudinaryApiKey}}',
+    uploadPreset: '{{cloudinaryPreset}}',
+    uploadSignature: generateSignature
+  }, (error, result) => {
+    if (!error && result && result.event === "success") {
+      console.log('Done! Here is the image info: ', result.info);
+      // hide the upload widget 
+      document.querySelector('#upload_widget').style.display="none";
 
-      // display the image
-//      document.querySelector('#id_image_url').value = result.info.url;
-//      document.querySelector('#uploaded_image').src = result.info.url;
-//      document.querySelector('#uploaded_image').style.display = 'inline';
-//    }
-//  }
-//)
-
-const myWidget = cloudinary.createUploadWidget(cloudinaryConfig, function(error, result){
-        // check if there is no error and there is a result, and the event of the result
-        // is a successful upload
-        if (!error && result && result.event == 'success') {
-            let url = result.info.secure_url;
-            // set the value of the hidden form field `image_url` to be
-            // the URL of the uploaded image
-            document.querySelector('#id_image_url').value = url;
-        }
-    });
+       display the image
+      document.querySelector('#id_image_url').value = result.info.url;
+      document.querySelector('#uploaded_image').src = result.info.url;
+      document.querySelector('#uploaded_image').style.display = 'inline';
+    }
+  }
+)
 
 
 <!-- add event listener to initalise the widget -->
@@ -76,3 +63,5 @@ document.getElementById("upload_widget").addEventListener("click", function(){
 </script>
 
 {{/block}}
+
+{{/extends}}
