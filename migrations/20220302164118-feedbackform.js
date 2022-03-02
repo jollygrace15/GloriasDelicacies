@@ -15,8 +15,12 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return null;
+  return db.createTable('feedbackform',{
+    "id": { "type": 'int', "primaryKey":true, "autoIncrement":true, "unsigned": true},
+    "feedback": { "type": 'string', "length":1000, "notNull":true},
+})
 };
+
 
 exports.down = function(db) {
   return null;
