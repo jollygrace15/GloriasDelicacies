@@ -11,6 +11,8 @@ const {bootstrapField, createProductForm, createSearchForm} = require('../forms'
 // import in the CheckIfAuthenticated middleware
 const { checkIfAuthenticated } = require('../middlewares');
 
+const dataLayer = require('../dal/products');
+
 //create a function that will get an info of a particular product ID
 async function getProductById(productId) {
     const product = await Product.where({
@@ -33,14 +35,12 @@ router.get('/products', async function (req,res) {
     //})
 
     // 1. get all the categories
-      const choices = await Category.fetchAll().map((category) => {
-        return [category.get('id'), category.get('name')];
-    })
-    choices.unshift([0, '----']);
+     const choices = await dataLayer.getAllCategories();
+     choices.unshift([0, '----']);
 
 
     // 2. Get all the tags -- unique syntax
-    const allTags = await Tag.fetchAll().map(tag => [tag.get('id'), tag.get('name')]);
+    const allTags = await dataLayer.getAllTags
 
    // 3. Create search form 
     let searchForm = createSearchForm(choices, allTags);
@@ -109,12 +109,11 @@ router.get('/create', checkIfAuthenticated, async function (req,res) {
     //    [3, "Ulam"],
     //    [4, "Dessert"]
     //]
-    const choices = await Category.fetchAll().map(function(category){
-        return [ category.get('id'), category.get('name')]
-    })
-    const allTags = await Tag.fetchAll().map(function(tag){
-        return [ tag.get('id'), tag.get('name')]
-    })
+     // 1. get all the categories
+     const choices = await dataLayer.getAllCategories();
+    
+    // 2. Get all the tags -- unique syntax
+    const allTags = await dataLayer.getAllTags
     const productForm = createProductForm(choices, allTags);
     //convert the form to bootstrap design
     res.render('products/create', {
@@ -130,12 +129,10 @@ router.get('/create', checkIfAuthenticated, async function (req,res) {
 
 router.post('/create', checkIfAuthenticated, async function(req,res){
     // goal: create a new product based on the input in the forms
-    const choices = await Category.fetchAll().map(function(category){
-        return [ category.get('id'), category.get('name')]
-    });
-    const allTags = await Tag.fetchAll().map(function(tag){
-        return [ tag.get('id'), tag.get('name')]
-    })
+      // 1. get all the categories
+      const choices = await dataLayer.getAllCategories();
+     // 2. Get all the tags -- unique syntax
+     const allTags = await dataLayer.getAllTags();
     // create an instance of the product form
     const productForm = createProductForm(choices, allTags);
     productForm.handle(req,{
@@ -190,12 +187,11 @@ router.get('/products/:product_id/update', checkIfAuthenticated, async function(
         'require': true
     })
     // fetch all the categories
-    const choices = await Category.fetchAll().map(function(category){
-        return [ category.get('id'), category.get('name')]
-    })
-    const allTags = await Tag.fetchAll().map(function(tag){
-        return [ tag.get('id'), tag.get('name')]
-    })
+    // 1. get all the categories
+    const choices = await dataLayer.getAllCategories();
+
+   // 2. Get all the tags -- unique syntax
+   const allTags = await dataLayer.getAllTags();
     const productForm = createProductForm(choices, allTags);
     //res.send(product.toJSON());
     // fill in the existing values
@@ -222,12 +218,12 @@ router.get('/products/:product_id/update', checkIfAuthenticated, async function(
 
 router.post('/products/:product_id/update', checkIfAuthenticated, async function(req,res){ 
     // fetch all the categories
-    const choices = await Category.fetchAll().map(function(category){
-        return [ category.get('id'), category.get('name')]
-    })
-    const allTags = await Tag.fetchAll().map(function(tag){
-        return [ tag.get('id'), tag.get('name')]
-    })
+    // 1. get all the categories
+    const choices = await dataLayer.getAllCategories();
+
+
+    // 2. Get all the tags -- unique syntax
+    const allTags = await dataLayer.getAllTags();
     const productForm = createProductForm(choices, allTags);
 
      // 1 - set the image url in the product form
@@ -240,7 +236,6 @@ router.post('/products/:product_id/update', checkIfAuthenticated, async function
         require: false, // was true pero sa turo ay false
         withRelated:['tags']    
     })
-    console.log(product + "product please");
      //pass the request into the product form
     productForm.handle(req, {
         'success':async function(form){
@@ -311,4 +306,3 @@ router.post('/products/:product_id/delete', checkIfAuthenticated, async function
     res.redirect('/products');
 })
 module.exports = router;
-

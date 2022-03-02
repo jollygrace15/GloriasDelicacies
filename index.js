@@ -49,7 +49,8 @@ app.use(function(req,res,next){
 // set up sessions
 app.use(session({          //a session store determines how the session data is saved
   store: new FileStore(),  //if using a FileStore, we are saving it to a file.
-  secret: 'keyboard cat',  // used for encrypting session ids
+  secret: process.env.SESSION_SECRET_KEY,
+  // used for encrypting session ids
   resave: false,
   saveUninitialized: true  // if a request arrives with no session, create a new session
 }))

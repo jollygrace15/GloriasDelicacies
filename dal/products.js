@@ -11,11 +11,12 @@ async function getProductById(productId) {
 }
 
 async function getAllCategories() {
-    const allCategories = await Category.fetchAll().map(function(category){
+    const choices = await Category.fetchAll().map(function(category){
         return [ category.get('id'), category.get('name')]
     });
-    return allCategories;
+    return choices;
 }
+
 
 async function getAllTags() {
     const allTags = await Tag.fetchAll().map(function(tag){
