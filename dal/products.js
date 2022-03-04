@@ -1,3 +1,4 @@
+// DAL=Data access layer
 const { Product, Category, Tag } = require('../models')
 
 async function getProductById(productId) {
