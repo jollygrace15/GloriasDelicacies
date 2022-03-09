@@ -11,13 +11,17 @@ const getCart = async function(userId) {
     })
 }
 
-const getCartItemByUserAndProduct = async function(userId, products) {
+
+
+const getCartItemByUserAndProduct = async function(userId, productId) {
     const cartItem  = await CartItem.where({
-        'user_id': userId
-    },{
+        'user_id': userId,
+        'product_id': productId
+    }).fetch({
         'require': false,
-        'withRelated': ['products', 'products.category']
+        //'withRelated': ['product', 'product.category']
     })
+    return cartItem;
 }
 
 const createCartItem = async function(userId, productId, quantity){
