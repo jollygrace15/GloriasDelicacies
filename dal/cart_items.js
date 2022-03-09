@@ -11,8 +11,8 @@ const getCart = async function(userId) {
     })
 }
 
-const getCartItem = async function(userId, products) {
-    const cartItem = await CartItem.where({
+const getCartItemByUserAndProduct = async function(userId, products) {
+    const cartItem  = await CartItem.where({
         'user_id': userId
     },{
         'require': false,
