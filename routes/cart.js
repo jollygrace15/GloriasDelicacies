@@ -10,7 +10,7 @@ router.get('/', checkIfAuthenticated, async function(req,res){
     const cartServices = new CartServices(userId);
     const allCartItems = await cartServices.getAllCartItems();
     console.log("cart.js")
-    res.send(allCartItems)
+    //res.send(allCartItems)
     //res.render('cart/index',{
     //    'cartItems': allCartItems.toJSON()
     //});

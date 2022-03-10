@@ -37,4 +37,15 @@ const createCartItem = async function(userId, productId, quantity){
 }
 
 
-module.exports = { getCart, getCartItemByUserAndProduct, createCartItem};
+const updateCartItem = async function(userId, productId, newQuantity) {
+    let cartItem = await getCartItemByUserAndProduct(userId, productId);
+    if (cartItem) {
+        cartItem.set('quantity', newQuantity);
+        await cartItem.save();
+        return true;
+    }
+    return false;
+    
+}
+
+module.exports = { getCart, getCartItemByUserAndProduct, createCartItem, updateCartItem};
