@@ -2,19 +2,21 @@ const { CartItem } = require('../models');
 
 // first arg: the id of the user that we want  get the shopping cart for
 const getCart = async function(userId) {
-    let allCartItems =  await CartItem.collection()
+    //let allCartItems =  await CartItem.collection()
+    return await CartItem.collection()
     .where({
         'user_id': userId
     }).fetch({
         'require': false, // user can have no item in their shopping cart
-        'withRelated': ['products', 'products.category']
+        'withRelated': ['products', 'product.category']
     })
 }
 
 
 
 const getCartItemByUserAndProduct = async function(userId, productId) {
-    const cartItem  = await CartItem.where({
+    //const cartItem  = await CartItem.where({
+    return await CartItem.where({
         'user_id': userId,
         'product_id': productId
     }).fetch({
@@ -35,4 +37,4 @@ const createCartItem = async function(userId, productId, quantity){
 }
 
 
-module.exports = { getCart, getCartItemByUserAndProduct, createCartItem} ;
+module.exports = { getCart, getCartItemByUserAndProduct, createCartItem};
