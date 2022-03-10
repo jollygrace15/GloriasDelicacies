@@ -2,7 +2,7 @@ const express = require('express');
 const { checkIfAuthenticated } = require('../middlewares');
 const router = express.Router();
 
-const cartDataLayer = require('../dal/cart_items');
+const cartDataLayer = require('../dal/cart_items.js');
 const CartServices = require('../services/cart_services');
 
 router.get('/', checkIfAuthenticated, async function(req,res){
@@ -21,8 +21,20 @@ router.get('/:product_id/add', checkIfAuthenticated, async function(req, res){
     let productId = req.params.product_id;
     let quantity = 1;
 
-    let cartServices = new CartServices(userId);
-    await cartServices.addToCart(productId, quantity); 
+    //let cartServices = new CartServices(userId);
+    //await cartServices.addToCart(productId, quantity);
+    let cartItem = await cartDataLayer.getCartItemByUserAndProduct(userId, productId);
+     if (cartItem) {
+        //console.log(cartItem.get('quantity'));
+        //if found, means the user already has this product in the shopping cart
+        cartItem.set('quantity', cartItem.get('quantity') + 1)
+        await cartItem.save();
+    }else{
+        //todo: check whether if there is enough stock
+        await cartDataLayer.createCartItem(userId,productId, quantity);
+    }
+
+
 
     req.flash('success_messages', 'Product has been added to cart');
     res.redirect('back');
