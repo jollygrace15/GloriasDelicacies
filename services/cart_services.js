@@ -13,7 +13,10 @@ class CartServices {
     async addToCart(productId, quantity) {
         let cartItem = await cartDataLayer.getCartItemByUserAndProduct(this.user_id, productId);
         if (cartItem) {
-            cartDataLayer.updateCartItem(this.user_id, productId, cartItem.get('quantity') + quantity)
+             cartItem.set('quantity', cartItem.get('quantity') + quantity)
+             await cartItem.save();
+
+            //cartDataLayer.updateCartItem(this.user_id, productId, cartItem.get('quantity') + quantity)
         } else {
              // todo: check whether if there is enough stock       
              await cartDataLayer.createCartItem(this.user_id, productId, quantity);
@@ -21,10 +24,10 @@ class CartServices {
         return cartItem;
     }
 
-    async updateQuantity(productId, newQuantity) {
-        let status = await cartDataLayer.updateCartItem(this.user_id, productId, newQuantity);
-        return status;
-    }
+    //async updateQuantity(productId, newQuantity) {
+    //    let status = await cartDataLayer.updateCartItem(this.user_id, productId, newQuantity);
+     //   return status;
+     //}
 }
 
 module.exports = CartServices;
