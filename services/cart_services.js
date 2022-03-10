@@ -1,6 +1,5 @@
 const cartDataLayer = require('../dal/cart_items');
 
-
 class CartServices {
     constructor(user_id) {
         this.user_id = user_id;
@@ -11,31 +10,21 @@ class CartServices {
         return allCartItems;
     }
 
-    async addToCart(userId, productId, quantity) {
-        // check: if the cart item with the same product id and user id
-    // is already in the database (check if the product is already in the shopping cart)
-
-        let cartItem = await cartDataLayer.getCartItemByUserAndProduct(userId, productId);
-        //console.log("cartItem= ", cartItem);
+    async addToCart(productId, quantity) {
+        let cartItem = await cartDataLayer.getCartItemByUserAndProduct(this.user_id, productId);
         if (cartItem) {
-        //console.log(cartItem.get('quantity'));
-        //if found, means the user already has this product in the shopping cart
-        cartItem.set('quantity', cartItem.get('quantity') + 1)
-        await cartItem.save();
-
-
-
-        
-
-
-
-
-    }else{
-        //todo: check whether if there is enough stock
-        await cartDataLayer.createCartItem(userId,productId, quantity);
+            cartDataLayer.updateCartItem(this.user_id, productId, cartItem.get('quantity') + quantity)
+        } else {
+             // todo: check whether if there is enough stock       
+             await cartDataLayer.createCartItem(this.user_id, productId, quantity);
+        }
+        return cartItem;
     }
-    return cartItem
+
+    async updateQuantity(productId, newQuantity) {
+        let status = await cartDataLayer.updateCartItem(this.user_id, productId, newQuantity);
+        return status;
     }
 }
 
-module.exports = CartServices
+module.exports = CartServices;
