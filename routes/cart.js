@@ -46,4 +46,13 @@ router.post('/:product_id/update', checkIfAuthenticated, async function(req,res)
     res.redirect('/cart/')
 })
 
+
+
+router.get('/:product_id/remove', async(req,res)=>{
+    let cart = new CartServices(req.session.user.id);
+    await cart.remove(req.params.product_id);
+    req.flash("success_messages", "Item has been removed");
+    res.redirect('/cart/');
+})
+
 module.exports = router;

@@ -8,7 +8,7 @@ class CartServices {
     async getAllCartItems() {
         const allCartItems = await cartDataLayer.getCart(this.user_id);
         return allCartItems;
-    }
+    } 
 
     //async addToCart(productId, quantity) {
     //    let cartItem = await cartDataLayer.getCartItemByUserAndProduct(this.user_id, productId);
