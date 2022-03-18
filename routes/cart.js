@@ -8,7 +8,7 @@ const CartServices = require('../services/cart_services');
 router.get('/display', checkIfAuthenticated, async function(req,res){
     console.log("cart.js")
     let userId = req.session.user.id;
-    const cartServices = new CartServices(user_Id);
+    const cartServices = new CartServices(userId);
     const allCartItems = await cartServices.getAllCartItems();
     console.log("cart.js 2")
     //res.send(allCartItems)
