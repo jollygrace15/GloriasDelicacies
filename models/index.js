@@ -1,50 +1,65 @@
-//If we require a directory or folder instead of
-//nodejs will default to look for index.js
-const bookshelf = require('../bookshelf')
+// if we require a direcyory or folder instead a file
+// nodejs will default to look for index.js
+const bookshelf = require('../bookshelf');
 
-
-const Product = bookshelf.model('Product', {
+// for consistency, we keep the name of the model
+// to be the same as the database, but singular and the
+// first alphabet is uppercase
+const Product = bookshelf.model('Product',{
     tableName:'products', // which table is this model referring to
-    category() {
+    // name of the relationship is the function name (below)
+    // keep the name of the relationship to be the model name lowercase
+    // it is singular because of belongsTo
+    category()  {
+        // eqv. one product belongs to one cateogry
         return this.belongsTo('Category')
-    }, //The products table belongs to one category
-      //A table of juices belongs to a juice category
+    },
     tags() {
         return this.belongsToMany('Tag');
     }
-});
+})
 
-const Category = bookshelf.model('Category',{ // 'Category' and the tableName: 'categories' must be related, only s is its difference.
-    tableName: 'categories',
+// make sure the name of the model
+// (1st parameter of the book bookshelf.model call) is the singular
+// form of the table name and the first alphabet is upper case
+const Category = bookshelf.model('Category', {
+    tableName:'categories', // this model refers to the categories table in the database
+                           // table name is plural
+    // the relationship name is the lower case of the 
+    // model name, plural (because it's hasMany relationship)
     products() {
+        // the arg of hasMany is the Model name
         return this.hasMany('Product');
     },
-    
 })
 
-
-// first arg is the name of the model, so the model's name is the Tag
-const Tag = bookshelf.model('Tag', {
-    tableName:'tags',
+// first arg is name of the model, so the model's name is Tag
+const Tag = bookshelf.model("Tag", {
+    'tableName':'tags',
     products() {
         return this.belongsToMany('Product');
-    },
-})
-
+    }
+} )
 
 // first arg is the name of the model, and it must be singular form of the
 // table name, with the first alphabet in uppercase.
 const User = bookshelf.model("User", {
     'tableName':'users',
     cartItems() {
-        return this.belongsTo('')
+        return this.hasMany('CartItem');
     }
 })
 
-const CartItem =  bookshelf.model("CartItem", {
-    'tableName': 'cart_items',
-    product(){
+const CartItem = bookshelf.model("CartItem", {
+    'tableName':'cart_items',
+    product() {
         return this.belongsTo('Product');
     }
 })
-module.exports = { Product, Category, Tag, User, CartItem };
+
+
+const BlacklistedToken = bookshelf.model('BlacklistedToken', {
+    'tableName': 'blacklisted_tokens'
+})
+
+module.exports = { Product, Category, Tag, User, CartItem, BlacklistedToken };

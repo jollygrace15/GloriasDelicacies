@@ -8,7 +8,7 @@ const getCart = async function(userId) {
         'user_id': userId
     }).fetch({
         'require': false, // user can have no item in their shopping cart
-        'withRelated': ['products', 'product.category']
+        'withRelated': ['product', 'product.category']
     })
 }
 
