@@ -22,8 +22,8 @@ const getCartItemByUserAndProduct = async function(userId, productId) {
     }).fetch({
         'require': false,
         //'withRelated': ['product', 'product.category']
-    })
-    return cartItem;
+    });
+    //return cartItem;
 }
 
 const createCartItem = async function(userId, productId, quantity){
@@ -45,7 +45,16 @@ const updateCartItem = async function(userId, productId, newQuantity) {
         return true;
     }
     return false;
-    
 }
 
-module.exports = { getCart, getCartItemByUserAndProduct, createCartItem, updateCartItem};
+
+async function removeFromCart(userId, productId) {
+    let cartItem = await getCartItemByUserAndProduct(userId, productId);
+    if (cartItem) {
+        await cartItem.destroy();
+        return true;
+    }
+    return false;
+}
+
+module.exports = { getCart, getCartItemByUserAndProduct, createCartItem, updateCartItem,  removeFromCart};

@@ -6,11 +6,9 @@ const router = express.Router();
 const CartServices = require('../services/cart_services');
 
 router.get('/display', checkIfAuthenticated, async function(req,res){
-    console.log("cart.js")
     let userId = req.session.user.id;
     const cartServices = new CartServices(userId);
     const allCartItems = await cartServices.getAllCartItems();
-    console.log("cart.js 2")
     //res.send(allCartItems)
     res.render('cart/index',{
         'cartItems': allCartItems.toJSON()
