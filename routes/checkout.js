@@ -8,8 +8,8 @@ router.get('/', async (req, res) => {
     const cart = new CartServices(req.session.user.id);
 
     // get all the items from the cart
-    let items = await cart.getCart();
-
+    let items = await cart.getAllCartItems();
+   
     // step 1 - create line items
     let lineItems = [];
     let meta = [];
