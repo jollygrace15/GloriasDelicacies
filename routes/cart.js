@@ -5,7 +5,7 @@ const router = express.Router();
 //const cartDataLayer = require('../dal/cart_items.js');
 const CartServices = require('../services/cart_services');
 
-router.get('/display', checkIfAuthenticated, async function(req,res){
+router.get('/', checkIfAuthenticated, async function(req,res){
     let userId = req.session.user.id;
     const cartServices = new CartServices(userId);
     const allCartItems = await cartServices.getAllCartItems();

@@ -18,13 +18,13 @@
             <input type="submit" value="Change Quantity" class="btn btn-primary btn-sm"/>
         </form>
 
-        <form method="POST" action="/cart/{{this.id}}/quantity/update">
-                <input type="hidden" value="{{../csrfToken}}" name="_csrf"/> 
-                <h5>
+        <!--form method="POST" action="/cart/{{this.id}}/quantity/update"-->
+                <!--input type="hidden" value="{{../csrfToken}}" name="_csrf"/--> 
+                <!--h5>
                     Quantity: <input type="text" name="newQuantity" value="{{this.quantity}}" style="width:30px" /> 
                     <input type="submit" value="Update Quantity" class="btn btn-success btn-sm" />
-                </h5>
-            </form>
+                </h5--->
+        <!--/form-->
 
          <div>
                 <a href="/cart/{{this.product.id}}/remove" class="btn btn-danger">Remove</a>
