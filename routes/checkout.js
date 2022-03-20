@@ -51,4 +51,12 @@ router.get('/', async (req, res) => {
     })
 })
 
+router.get('/success/:sessionId', function(req, res){
+    res.render('checkout/success')
+})
+
+router.get('/cancel', function(req, res){
+    res.render('checkout/cancel')
+})
+
 module.exports = router;
