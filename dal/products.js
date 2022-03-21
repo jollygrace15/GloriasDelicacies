@@ -11,6 +11,11 @@ async function getProductById(productId) {
     return product;
 }
 
+const getAllProducts = async () => {
+    return await Product.fetchAll();
+}
+
+
 async function getAllCategories() {
     const choices = await Category.fetchAll().map(function(category){
         return [ category.get('id'), category.get('name')]
@@ -38,4 +43,4 @@ async function createProduct(productData) {
     return newProduct;
 }
 
-module.exports = { getProductById, getAllCategories, getAllTags, createProduct}
+module.exports = { getProductById, getAllCategories, getAllTags, createProduct, getAllProducts}

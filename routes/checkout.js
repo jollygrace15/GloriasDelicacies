@@ -37,8 +37,7 @@ router.get('/', async (req, res) => {
     const payment = {
         payment_method_types: ['card'],
         line_items: lineItems,
-        success_url: process.env.STRIPE_SUCCESS_URL,
-                        // + '?sessionId={CHECKOUT_SESSION_ID}'
+        success_url: process.env.STRIPE_SUCCESS_URL + '?sessionId={CHECKOUT_SESSION_ID}',
         cancel_url: process.env.STRIPE_ERROR_URL,
         metadata: {
             'orders': metaData
@@ -84,6 +83,7 @@ router.post('/process_payment', bodyParser.raw({type: 'application/json'}), asyn
         // process stripeSession
     }
     res.send({ received: true });
+    res.render('checkout/success')
 })
 
 module.exports = router;
