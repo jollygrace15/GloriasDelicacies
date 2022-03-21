@@ -80,6 +80,7 @@ router.post('/process_payment', bodyParser.raw({type: 'application/json'}), asyn
         console.log(stripeSession);
         let orders = JSON.parse(stripeSession.metadata.orders)
         console.log(orders)
+        console.log("here")
         // process stripeSession
     }
     res.send({ received: true });
