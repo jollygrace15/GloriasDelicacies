@@ -75,7 +75,20 @@ app.use(function(req,res,next){
 
 
 // enable CSRF
-app.use(csrf());
+//app.use(csrf());
+
+// note: replaced app.use(csrf()) with the following:
+const csrfInstance = csrf();
+app.use(function(req,res,next){
+  console.log("checking for csrf exclusion")
+  // exclude whatever url we want from CSRF protection
+  if (req.url === "/checkout/process_payment") {
+    return next();
+  }else{
+  csrfInstance(req,res,next);
+  }
+})
+
 
 
 // check if there is a csrf error. If so, render a friendly error message
@@ -91,8 +104,10 @@ app.use(function(err, req, res, next){
 
 // share the csrf token with all hbs files
 app.use(function(req,res,next){
- res.locals.csrfToken = req.csrfToken();  // req.csrfToken() is available
-                                          // after we do `app.use(csrf())`
+ if (req.csrfToken) {
+  res.locals.csrfToken = req.csrfToken();  // req.csrfToken() is available
+ }
+ // after we do `app.use(csrf())`
  next();
 })
 
