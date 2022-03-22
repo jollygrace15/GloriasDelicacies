@@ -37,7 +37,6 @@ router.get('/', async (req, res) => {
     const payment = {
         payment_method_types: ['card'],
         line_items: lineItems,
-        //success_url: 'https://3000-jollygrace15-gloriasdeli-xr5xt0sk8x5.ws-eu38.gitpod.io/checkout/success/' + {CHECKOUT_SESSION_ID},
         success_url: process.env.STRIPE_SUCCESS_URL,
         cancel_url: process.env.STRIPE_ERROR_URL,
         metadata: {
@@ -56,12 +55,10 @@ router.get('/', async (req, res) => {
 router.get('/success/:sessionId', function(req, res){
     console.log(req.params.sessionId);
     res.render('checkout/success')
-    console.log("here at router.get('/success/:sessionId'")
 })
 
 router.get('/cancel', function(req, res){
     res.render('checkout/cancel')
-    console.log("here at router.get('/cancel'")
 })
 
 router.post('/process_payment', bodyParser.raw({type: 'application/json'}), async function (req, res) {
@@ -86,8 +83,6 @@ router.post('/process_payment', bodyParser.raw({type: 'application/json'}), asyn
         // process stripeSession
     }
     res.send({ received: true });
-    //res.render('checkout/success')
-    console.log("here at router.post('/process_payment'")
 })
 
 module.exports = router;
