@@ -5,13 +5,13 @@ const { createProductForm } = require('../../forms');
 
 const productDataLayer = require('../../dal/products')
 
-router.get('/', async(req,res)=>{
+router.get('/', async (req,res) => {
     //res.send(await productDataLayer.getAllProducts())
     const allProducts = await productDataLayer.getAllProducts();
     res.json(allProducts)
 })
 
-
+// POST/api/products 
 router.post('/', async (req, res) => {
     const allCategories = await productDataLayer.getAllCategories();
     const allTags = await productDataLayer.getAllTags();
