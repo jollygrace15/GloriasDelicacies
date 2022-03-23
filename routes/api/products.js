@@ -6,7 +6,9 @@ const { createProductForm } = require('../../forms');
 const productDataLayer = require('../../dal/products')
 
 router.get('/', async(req,res)=>{
-    res.send(await productDataLayer.getAllProducts())
+    //res.send(await productDataLayer.getAllProducts())
+    const allProducts = await productDataLayer.getAllProducts();
+    res.json(allProducts)
 })
 
 
