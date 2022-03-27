@@ -80,10 +80,11 @@ app.use(function(req,res,next){
 // note: replaced app.use(csrf()) with the following:
 const csrfInstance = csrf();
 app.use(function(req,res,next){
-  console.log("checking for csrf exclusion")
   // exclude whatever url we want from CSRF protection
-  if (req.url === "/checkout/process_payment"  || req.url.slice(0,5)=="/api/") {
+  if (req.url === "/checkout/process_payment"  || req.url.slice(0,5) == "/api/") {
     return next();
+  //}else{
+  //  console.log ("checking for csrf exclusion failed")
   }
   csrfInstance(req,res,next);
 })
@@ -119,7 +120,7 @@ const cartRoutes = require('./routes/cart');
 const checkoutRoutes = require('./routes/checkout');
 const { checkIfAuthenticated } = require("./middlewares");
 const api = {
-  'products': require('./routes/api/products')
+  products: require('./routes/api/products')
 }
 
 
@@ -133,7 +134,7 @@ async function main() {
   //checkIfAuthenticated
   //register API routes
   app.use('/api/products', express.json(), api.products);
-
+  //express.json() XXX should be here==> ('/api/products', XXX,api.products);
 }
 
 main();

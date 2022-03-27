@@ -1,14 +1,16 @@
 const express = require('express')
 const router = express.Router();
+
+//double check
 const { Product } = require('../../models');
 const { createProductForm } = require('../../forms');
 
 const productDataLayer = require('../../dal/products')
 
-router.get('/', async (req,res) => {
-    //res.send(await productDataLayer.getAllProducts())
-    const allProducts = await productDataLayer.getAllProducts();
-    res.json(allProducts)
+router.get('/', async function (req,res) {
+    res.send(await productDataLayer.getAllProducts())
+    //const allProducts = await productDataLayer.getAllProducts();
+    //res.json(allProducts)
 })
 
 // POST/api/products 
@@ -41,8 +43,6 @@ router.post('/', async (req, res) => {
     })
 
 })
-
-
 
 
 module.exports = router;
