@@ -7,14 +7,14 @@ const { createProductForm } = require('../../forms');
 
 const productDataLayer = require('../../dal/products')
 
-router.get('/', async function (req,res) {
+router.get('/', async function (req, res) {
     res.send(await productDataLayer.getAllProducts())
     //const allProducts = await productDataLayer.getAllProducts();
     //res.json(allProducts)
 })
 
 // POST/api/products 
-router.post('/', async (req, res) => {
+router.post('/', async function (req, res) {
     const allCategories = await productDataLayer.getAllCategories();
     const allTags = await productDataLayer.getAllTags();
     const productForm = createProductForm(allCategories, allTags);
@@ -30,6 +30,8 @@ router.post('/', async (req, res) => {
                 await product.tags().attach(tags.split(","));
             }
             res.send(product);
+            //so..
+            //res.json(product);
         },
         'error': async (form) => {
            let errors = {};
@@ -39,6 +41,8 @@ router.post('/', async (req, res) => {
                }
            }
            res.send(JSON.stringify(errors));
+           //so..
+           //res.json(errors);
         }
     })
 
