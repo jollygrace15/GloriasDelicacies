@@ -27,6 +27,9 @@ app.use(
   })
 );
 
+// enable css
+app.use(express.static(__dirname + '/public'));
+
 
 // Register Flash middleware. The middleware always run for all routes. 
 //app.use(function (req, res, next) {
@@ -78,18 +81,15 @@ app.use(function(req,res,next){
 //app.use(csrf());
 
 // note: replaced app.use(csrf()) with the following:
+
 const csrfInstance = csrf();
-app.use(function(req,res,next){
-  // exclude whatever url we want from CSRF protection
-  if (req.url === "/checkout/process_payment"  || req.url.slice(0,5) == "/api/") {
-    return next();
-  //}else{
-  //  console.log ("checking for csrf exclusion failed")
+app.use(function (req, res, next) {
+  // exclude /checkout/process_payment for CSRF
+  if (req.url === '/checkout/process_payment' || req.url.slice(0,5)=="/api/") {
+      return next()
   }
-  csrfInstance(req,res,next);
+  csrfInstance(req, res, next)
 })
-
-
 
 // check if there is a csrf error. If so, render a friendly error message
 app.use(function(err, req, res, next){

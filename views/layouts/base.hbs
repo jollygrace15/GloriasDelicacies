@@ -7,12 +7,14 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="./base.css" rel="stylesheet" />
 
-    <title>Hello, world!</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <title>Gloria's Delicacies!</title>
   </head>
   <body>
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">Navbar w/ text</a>
+            <a class="navbar-brand" href="#">Gloria's Delicacies</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
                 aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -36,7 +38,7 @@
                     <a href="/users/logout" class="ml-3 btn btn-primary btn-sm">Logout</a>
 
                     {{else}}
-                    Hi, stranger
+                    Please login
                     <a href="/users/login" class="ml-3 btn btn-primary btn-sm">Login</a>
                     {{/if}}
                 </div>
