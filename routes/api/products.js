@@ -46,7 +46,7 @@ router.post('/', async (req, res) => {
     })
 })
 
-// for testing
+//OK
 router.get('/:product_id/update', async function(req, res){
     //retrieve the product
     const productId = req.params.product_id;
@@ -61,8 +61,6 @@ router.get('/:product_id/update', async function(req, res){
 
    // 2. Get all the tags -- unique syntax
    const allTags = await productDataLayer.getAllTags();
-
-
 
     //const productForm = createProductForm(choices, allTags);
     //res.send(product.toJSON());
@@ -84,12 +82,18 @@ router.get('/:product_id/update', async function(req, res){
 
 
 // PUT for testing
-router.put('/update', async (req, res) => {
+router.post('/:product_id/update', async (req, res) => {
+    //retrieve the product
+    const productId = req.params.product_id;
+    const product = await Product.where({
+        'id': productId
+    }).fetch({
+        'require': true
+    })
     const allCategories = await productDataLayer.getAllCategories();
     const allTags = await productDataLayer.getAllTags();
     const productForm = createProductForm(allCategories, allTags);
     console.log("put products")
-    console.log(allTags)
     productForm.handle(req, {
         'success': async (form) => {                    
             let { tags, ...productData } = form.data;
