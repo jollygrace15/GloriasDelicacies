@@ -122,4 +122,34 @@ router.post('/:product_id/update', async (req, res) => {
 })
 
 
+
+router.get('/:product_id/delete', async function(req,res){
+    const productId = req.params.product_id;
+    //const product = await getProductById(productId)
+    // fetch the product that we want to delete
+    const product = await Product.where({
+    'id': req.params.product_id
+    }).fetch({
+    require: true
+    });
+
+    res.send(await productDataLayer.getProductById(productId))
+    //res.render('products/delete',{
+    //    'product': product.toJSON()
+    //})
+})
+
+router.post('/:product_id/delete', async function(req,res){
+    const productId = req.params.product_id;
+    console.log("deleting product number: " + productId)
+    //const product = await getProductById(req.params.product_id)
+    const product = await Product.where({
+        'id': req.params.product_id
+        }).fetch({
+        require: true
+        });
+    await product.destroy();
+    res.send('deleted!');
+})
+
 module.exports = router;
