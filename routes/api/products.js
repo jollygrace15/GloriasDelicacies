@@ -7,6 +7,7 @@ const { createProductForm } = require('../../forms');
 
 const productDataLayer = require('../../dal/products')
 
+//OK
 router.get('/', async function (req, res) {
     console.log("get products")
     res.send(await productDataLayer.getAllProducts())
@@ -14,13 +15,12 @@ router.get('/', async function (req, res) {
     //res.json(allProducts)
 })
 
-// POST/api/products 
+//OK
 router.post('/', async (req, res) => {
     const allCategories = await productDataLayer.getAllCategories();
     const allTags = await productDataLayer.getAllTags();
     const productForm = createProductForm(allCategories, allTags);
     console.log("post products")
-    console.log(allTags)
     productForm.handle(req, {
         'success': async (form) => {                    
             let { tags, ...productData } = form.data;
@@ -44,11 +44,10 @@ router.post('/', async (req, res) => {
            res.send(JSON.stringify(errors));
         }
     })
-
 })
 
 // for testing
-router.get('/update', async function(req, res){
+router.get('/:product_id/update', async function(req, res){
     //retrieve the product
     const productId = req.params.product_id;
     const product = await Product.where({
@@ -58,31 +57,31 @@ router.get('/update', async function(req, res){
     })
     // fetch all the categories
     // 1. get all the categories
-    const choices = await dataLayer.getAllCategories();
+    const choices = await productDataLayer.getAllCategories();
 
    // 2. Get all the tags -- unique syntax
-   const allTags = await dataLayer.getAllTags();
-    const productForm = createProductForm(choices, allTags);
+   const allTags = await productDataLayer.getAllTags();
+
+
+
+    //const productForm = createProductForm(choices, allTags);
     //res.send(product.toJSON());
     // fill in the existing values
-    productForm.fields.name.value = product.get('name');
-    productForm.fields.cost.value = product.get('cost');
-    productForm.fields.description.value = product.get('description');
-    productForm.fields.category_id.value = product.get('category_id');
-    productForm.fields.image_url.value = product.get('image_url');
+    //productForm.fields.name.value = product.get('name');
+    //productForm.fields.cost.value = product.get('cost');
+    //productForm.fields.description.value = product.get('description');
+    //productForm.fields.category_id.value = product.get('category_id');
+    //productForm.fields.image_url.value = product.get('image_url');
     // get only the ids from the tags that belongs to the product
-   const selectedTags = await product.related('tags').pluck('id');
+   //const selectedTags = await product.related('tags').pluck('id');
    // set the existing tags
-   productForm.fields.tags.value = selectedTags;
+   //productForm.fields.tags.value = selectedTags;
 
-    res.render('products/update', {
-        'form': productForm.toHTML(bootstrapField),
-        'product': product.toJSON(),
-        'cloudinaryName':process.env.CLOUDINARY_NAME,
-        'cloudinaryApiKey':process.env.CLOUDINARY_API_KEY,
-        'cloudinaryUploadPreset':process.env.CLOUDINARY_UPLOAD_PRESET
-    })
+    res.send(await productDataLayer.getProductById(productId))
 })
+
+
+
 
 // PUT for testing
 router.put('/update', async (req, res) => {
