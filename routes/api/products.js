@@ -81,7 +81,7 @@ router.get('/:product_id/update', async function(req, res){
 
 
 
-// PUT for testing
+// OK
 router.post('/:product_id/update', async (req, res) => {
     //retrieve the product
     const productId = req.params.product_id;
@@ -97,7 +97,8 @@ router.post('/:product_id/update', async (req, res) => {
     productForm.handle(req, {
         'success': async (form) => {                    
             let { tags, ...productData } = form.data;
-            const product = new Product(productData);
+            //const product = new Product(productData);
+            product.set(productData);
             await product.save();
     
             // save the many to many relationship
